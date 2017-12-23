@@ -1,0 +1,78 @@
+﻿html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+}
+
+.navbar-default {
+    background-color: darkslategrey;
+    /*color:darkorange;*/
+    background-image: none;
+    background-repeat: no-repeat;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    background-color: #f5f5f5;
+}
+/* Custom page CSS
+        -------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+body > .container {
+    padding: 60px 15px 0;
+}
+
+h3 {
+    text-decoration: underline double;
+}
+
+.row-eq-height {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.container .text-muted {
+    margin: 20px 0;
+}
+
+.col-options {
+    border: solid 2px;
+    padding: 20px;
+}
+
+.col-show {
+    border: solid 2px;
+    padding: 20px;
+    margin-left: 2px;
+}
+
+.footer > .container {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+code {
+    font-size: 80%;
+}
+/* Custom page CSS
+        -------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+.container {
+    width: auto;
+    max-width: 1200px;
+    padding: 0 15px;
+}
+
+    .container .text-muted {
+        margin: 20px 0;
+    }
