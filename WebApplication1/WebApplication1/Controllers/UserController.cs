@@ -89,6 +89,23 @@ namespace RolesAndClaims.Controllers
             await signInMngr.SignInAsync(user, false);
             return Ok();
         }
+        [HttpGet, Route("usersnclaims")]
+        public async Task<IActionResult> GetAllUsersWithClaims()
+        {
+            var listOfUserWithClaims = new List<UserVm>();
+            foreach (var user in userMngr.Users)
+            {
+                var usersClaims = await userMngr.GetClaimsAsync(user);
+
+                var userNClaims = new UserVm()
+                {
+                    User = user,
+                    Claims = usersClaims
+                };
+                listOfUserWithClaims.Add(userNClaims);
+            }
+            return Ok(listOfUserWithClaims);
+        }
         [HttpGet, Route("open")]
         public IActionResult Open()
         {

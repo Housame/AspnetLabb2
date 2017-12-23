@@ -10,7 +10,8 @@
     var hiddenPolicyAdult = $('#hidden-policy-20');
     var publishSportPolicy = $('#publish-sport-policy');
     var publishCulturePolicy = $('#publish-culture-policy');
-    //line: 22
+    var usersAndClaims = $("#GetAllUsersWithClaims");
+    //line: 23
     getUsers();
     //On clicking all users will be removed from db and re-added
     addUsers.on('click', function () {
@@ -52,6 +53,17 @@
             console.log('error');
         });
 
+    });
+    usersAndClaims.click(function () {
+        console.log("get users with their claims");
+        $.ajax({
+            url: '/api/user/usersnclaims',
+            method: 'GET'
+        }).done(function (result) {
+            console.log(result);
+        }).fail(function (xhr, status, error) {
+            console.log('error');
+        });
     });
 
     //Gettinga all users that can see  open news
