@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RolesAndClaims.Entities;
 using System;
@@ -87,6 +88,40 @@ namespace RolesAndClaims.Controllers
             var user = await userMngr.FindByNameAsync(email);
             await signInMngr.SignInAsync(user, false);
             return Ok();
+        }
+        [HttpGet, Route("open")]
+        public IActionResult Open()
+        {
+            return Ok("Open");
+        }
+
+        [Authorize(Policy = "HiddenNews")]
+        [HttpGet, Route("hidden")]
+        public IActionResult HiddenNews()
+        {
+            return Ok("Hidden");
+        }
+
+        [Authorize(Policy = "AgeRequirement")]
+        [Authorize(Policy = "HiddenNews")]
+        [HttpGet, Route("age")]
+        public IActionResult Age()
+        {
+            return Ok("Age");
+        }
+
+        [Authorize(Policy = "SportsRequirement")]
+        [HttpGet, Route("sport")]
+        public IActionResult Sport()
+        {
+            return Ok("Sport");
+        }
+
+        [Authorize(Policy = "CultureRequirement")]
+        [HttpGet, Route("culture")]
+        public IActionResult Culture()
+        {
+            return Ok("Culture");
         }
 
     }

@@ -30,8 +30,10 @@ namespace WebApplication1
             services.AddMvc();
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("AllowedToPublish", policy => policy.RequireRole("Publisher"));
-                options.AddPolicy("AllowedToView", policy => policy.RequireRole("Publisher", "Subscriber"));
+                options.AddPolicy("HiddenNews", policy => policy.RequireRole("Publisher", "Subscriber", "Administrator"));
+                options.AddPolicy("AgeRequirement", policy => policy.RequireRole("Publisher", "Subscriber"));
+                options.AddPolicy("SportsRequirement", policy => policy.RequireRole("Publisher", "Administrator"));
+                options.AddPolicy("CultureRequirement", policy => policy.RequireRole("Publisher", "Administrator"));
             });
         }
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
