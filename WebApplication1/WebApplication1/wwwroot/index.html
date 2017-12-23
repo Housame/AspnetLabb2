@@ -35,7 +35,7 @@
                     <!--<li class="active"><a href="#">Home</a></li>-->
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><p class="navbar-text"><strong><i>@User.Identity.Name</i></strong> är inloggad</p></li>
+                    <li><p class="navbar-text"><strong><i id="logged-User">Ingen</i></strong> är inloggad</p></li>
                 </ul>
             </div>
         </div>
@@ -62,7 +62,7 @@
                     </div>
                     <br><br>
                     <div class="text-center">
-                        <button class="btn btn-success">Logga in</button>
+                        <button class="btn btn-success" id="login">Logga in</button>
                     </div>
                 </div>
                 <hr>

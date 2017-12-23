@@ -14,16 +14,16 @@ namespace RolesAndClaims.Controllers
     {
         static readonly string[] roles = { "Administrator", "Publisher", "Subscriber" };
 
-        UserManager<User> _userManager;
-        SignInManager<User> _signInManager;
-        RoleManager<UserRole> _roleManager;
+        UserManager<User> userMngr;
+        SignInManager<User> signInMngr;
+        RoleManager<UserRole> roleMngr;
         DatabaseContext context;
 
-        public UserController(UserManager<User> _userManager, SignInManager<User> _signInManager, RoleManager<UserRole> _roleManager, DatabaseContext context)
+        public UserController(UserManager<User> userMngr, SignInManager<User> signInMngr, RoleManager<UserRole> roleMngr, DatabaseContext context)
         {
-            this._userManager = _userManager;
-            this._signInManager = _signInManager;
-            this._roleManager = _roleManager;
+            this.userMngr = userMngr;
+            this.signInMngr = signInMngr;
+            this.roleMngr = roleMngr;
             this.context = context;
         }
 
@@ -31,13 +31,13 @@ namespace RolesAndClaims.Controllers
         {
             foreach (var role in roles)
             {
-                var roleExists = await _roleManager.RoleExistsAsync(role);
+                var roleExists = await roleMngr.RoleExistsAsync(role);
 
                 if (!roleExists)
                 {
                     var newRole = new UserRole();
                     newRole.Name = role;
-                    await _roleManager.CreateAsync(newRole);
+                    await roleMngr.CreateAsync(newRole);
                 }
             }
             return Ok();
@@ -48,7 +48,7 @@ namespace RolesAndClaims.Controllers
         public async Task<IActionResult> ClearDbAndRetrieveStaticUsers()
         {
             //await AddRolesToIdentity();
-            context.RemoveRange(_userManager.Users);
+            context.RemoveRange(userMngr.Users);
 
             var users = new List<StaticUser>
             {
@@ -69,16 +69,24 @@ namespace RolesAndClaims.Controllers
                     FirstName = user.FirstName,
                 };
 
-                var result = await _userManager.CreateAsync(newUser);
+                var result = await userMngr.CreateAsync(newUser);
 
                 if (result.Succeeded)
                 {
                     if (user.Role != null)
-                        await _userManager.AddToRoleAsync(newUser, user.Role);
+                        await userMngr.AddToRoleAsync(newUser, user.Role);
                 }
             }
 
-            return Ok(_userManager.Users);
+            return Ok(userMngr.Users);
+        }
+        [HttpPost]
+        [Route("login")]
+        public async Task<IActionResult> Login(string email)
+        {
+            var user = await userMngr.FindByNameAsync(email);
+            await signInMngr.SignInAsync(user, false);
+            return Ok();
         }
 
     }
