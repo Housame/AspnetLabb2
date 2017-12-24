@@ -31,10 +31,10 @@ namespace WebApplication1
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("HiddenNews", policy => policy.RequireRole("Publisher", "Subscriber", "Administrator"));
-                options.AddPolicy("AgeRequirement", policy => policy.RequireClaim("News", "Adult", "Admin", "AllPublisher"));
+                options.AddPolicy("AgeRequirement", policy => policy.RequireClaim("News", "Adult", "Admin"));
                 options.AddPolicy("SportsRequirement", policy => policy.RequireClaim("News", "PublishSport", "Admin"));
                 options.AddPolicy("PublishEconomy", policy => policy.RequireClaim("News", "PublishEconomy", "Admin"));
-                options.AddPolicy("CultureRequirement", policy =>policy.RequireClaim("PublishCulture", "Admin"));
+                options.AddPolicy("CultureRequirement", policy =>policy.RequireClaim("News", "PublishCulture", "Admin"));
             });
         }
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

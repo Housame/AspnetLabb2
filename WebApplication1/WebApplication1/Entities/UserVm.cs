@@ -10,6 +10,7 @@ namespace RolesAndClaims.Entities
     public class UserVm
     {
         public User User { get; set; }
+        public IList<string> Role { get; set; }
         public IList<Claim> Claims { get; set; }
     }
 }

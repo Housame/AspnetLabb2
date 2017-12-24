@@ -28,7 +28,7 @@
             getUsers();
         }).fail(function (xhr, status, error) {
             console.log('error');
-        }); 
+        });
     });
     //Getting all users into logging select-form
     function getUsers() {
@@ -50,7 +50,7 @@
     }
     //Login when user is selected
     loginBtn.on('click', function () {
-        $('#info-access').text(''); 
+        $('#info-access').text('');
         $('#info-age').text('');
         console.log('login');
         var selected = usersSelect.find(":selected").text();
@@ -82,99 +82,134 @@
             method: 'GET'
         }).done(function (result) {
             console.log(result);
-
-        }).fail(function (xhr, status, error) {
-            console.log('error');
+            $.each(result, function (i, item) {
+                if (item.user.age === null) {
+                    var $tr = $('<tr>').append(
+                        $('<td>').text(item.user.firstName),
+                        $('<td>').text(item.user.email),
+                        $('<td>').text("--"),
+                        $('<td>').text(item.role[0]),
+                        $('<td>').text(claimsGet(item.claims)))
+                        .appendTo('#customerTable');
+                }
+                else {
+                    var $tr = $('<tr>').append(
+                        $('<td>').text(item.user.firstName),
+                        $('<td>').text(item.user.email),
+                        $('<td>').text(item.user.age),
+                        $('<td>').text(item.role[0]),
+                        $('<td>').text(claimsGet(item.claims)))
+                        .appendTo('#customerTable');
+                }
+               
+                
         });
+    }).fail(function (xhr, status, error) {
+        console.log('error');
     });
-    //Gettinga all users that can see  open news
-    openPolicy.on('click', function () {
-        console.log('open-Policy');
-        $.ajax({
-            url: '/api/user/open',
-            type: 'Get'
-        }).done(function (result) {
-            console.log('open-Policy succes');
-            console.log(result);
-            $('#info-access').removeClass("access-red").addClass("access-green");
-            $('#info-access').append('<h3></h3>').text('Se öppna nyheter, kod 200');
-        }).fail(function (xhr, status, error) {
-            console.log('error');
-            $('#info-access').removeClass("access-green").addClass("access-red");
-            $('#info-access').append('<h3></h3>').text('Se öppna nyheter, kod 403');
-        });
+});
+// "Squeezing" out the claims from array to a string to fit the <td>
+function claimsGet(claims) {
+    var strToReturn = "";
+    $.each(claims, function (i, claim) {
+        if (i === 0) {
+            strToReturn = claim.type;
+        }
+        strToReturn = strToReturn + ", " + claim.value;
+    });
+    return strToReturn;
+}
 
+//Getting info about claims  ||||||
+//-------------------------  vvvvvv 
+//Gettinga all users that can see  open news
+openPolicy.on('click', function () {
+    console.log('open-Policy');
+    $.ajax({
+        url: '/api/user/open',
+        type: 'Get'
+    }).done(function (result) {
+        console.log('open-Policy succes');
+        console.log(result);
+        $('#info-access').removeClass("access-red").addClass("access-green");
+        $('#info-access').append('<h3></h3>').text('Se öppna nyheter, kod 200');
+    }).fail(function (xhr, status, error) {
+        console.log('error');
+        $('#info-access').removeClass("access-green").addClass("access-red");
+        $('#info-access').append('<h3></h3>').text('Se öppna nyheter, kod 403');
     });
-    //Getting all users that can see hidden news
-    hiddenPolicy.on('click', function () {
-        console.log('hidden-Policy');
-        $.ajax({
-            url: '/api/user/hidden',
-            type: 'Get'
-        }).done(function (result) {
-            console.log('hidden-Policy succes');
-            console.log(result);
-            $('#info-access').removeClass("access-red").addClass("access-green");
-            $('#info-access').append('<h3></h3>').text('Se dolda nyheter, kod 200');
-        }).fail(function (xhr, status, error) {
-            console.log('error');
-            $('#info-access').removeClass("access-green").addClass("access-red");
-            $('#info-access').append('<h3></h3>').text('Se dolda nyheter, kod 403');
-        });
 
+});
+//Getting all users that can see hidden news
+hiddenPolicy.on('click', function () {
+    console.log('hidden-Policy');
+    $.ajax({
+        url: '/api/user/hidden',
+        type: 'Get'
+    }).done(function (result) {
+        console.log('hidden-Policy succes');
+        console.log(result);
+        $('#info-access').removeClass("access-red").addClass("access-green");
+        $('#info-access').append('<h3></h3>').text('Se dolda nyheter, kod 200');
+    }).fail(function (xhr, status, error) {
+        console.log('error');
+        $('#info-access').removeClass("access-green").addClass("access-red");
+        $('#info-access').append('<h3></h3>').text('Se dolda nyheter, kod 403');
     });
-    //Getting users that can se all hidden news and >= than 20 years
-    hiddenPolicyAdult.on('click', function () {
-        console.log('hidden-Policy-20');
-        $.ajax({
-            url: '/api/user/age',
-            type: 'Get'
-        }).done(function (result) {
-            console.log('hidden-Policy-20 succes');
-            console.log(result);
-            $('#info-access').removeClass("access-red").addClass("access-green");
-            $('#info-access').append('<h3></h3>').text('Se dolda nyheter och är äldre än 20år, kod 200');
-        }).fail(function (xhr, status, error) {
-            console.log('error');
-            $('#info-access').removeClass("access-green").addClass("access-red");
-            $('#info-access').append('<h3></h3>').text('Se dolda nyheter och är äldre än 20år, kod 403');
-        });
 
+});
+//Getting users that can se all hidden news and >= than 20 years
+hiddenPolicyAdult.on('click', function () {
+    console.log('hidden-Policy-20');
+    $.ajax({
+        url: '/api/user/age',
+        type: 'Get'
+    }).done(function (result) {
+        console.log('hidden-Policy-20 succes');
+        console.log(result);
+        $('#info-access').removeClass("access-red").addClass("access-green");
+        $('#info-access').append('<h3></h3>').text('Se dolda nyheter och är äldre än 20år, kod 200');
+    }).fail(function (xhr, status, error) {
+        console.log('error');
+        $('#info-access').removeClass("access-green").addClass("access-red");
+        $('#info-access').append('<h3></h3>').text('Se dolda nyheter och är äldre än 20år, kod 403');
     });
-    //Getting users that can publish Sport news
-    publishSportPolicy.on('click', function () {
-        console.log('publish-Sport-Policy');
-        $.ajax({
-            url: '/api/user/sport',
-            type: 'Get'
-        }).done(function (result) {
-            console.log('publish-sport-Policy succes');
-            console.log(result);
-            $('#info-access').removeClass("access-red").addClass("access-green");
-            $('#info-access').append('<h3></h3>').text('Publicera sport nyheter, kod 200');
-        }).fail(function (xhr, status, error) {
-            console.log('error');
-            $('#info-access').removeClass("access-green").addClass("access-red");
-            $('#info-access').append('<h3></h3>').text('Publicera sport nyheter, kod 403');
-        });
 
+});
+//Getting users that can publish Sport news
+publishSportPolicy.on('click', function () {
+    console.log('publish-Sport-Policy');
+    $.ajax({
+        url: '/api/user/sport',
+        type: 'Get'
+    }).done(function (result) {
+        console.log('publish-sport-Policy succes');
+        console.log(result);
+        $('#info-access').removeClass("access-red").addClass("access-green");
+        $('#info-access').append('<h3></h3>').text('Publicera sport nyheter, kod 200');
+    }).fail(function (xhr, status, error) {
+        console.log('error');
+        $('#info-access').removeClass("access-green").addClass("access-red");
+        $('#info-access').append('<h3></h3>').text('Publicera sport nyheter, kod 403');
     });
-    //Getting users that can publish Culture news
-    publishCulturePolicy.on('click', function () {
-        console.log('publish-Culture-Policy');
-        $.ajax({
-            url: '/api/user/culture',
-            type: 'Get'
-        }).done(function (result) {
-            console.log('publish-Culture-Policy succes');
-            console.log(result);
-            $('#info-access').removeClass("access-red").addClass("access-green");
-            $('#info-access').append('<h3></h3>').text('Publicera kultur nyheter, kod 200');
-        }).fail(function (xhr, status, error) {
-            console.log('error');
-            $('#info-access').removeClass("access-green").addClass("access-red");
-            $('#info-access').append('<h3></h3>').text('Publicera kultur nyheter, kod 403');
-        });
 
+});
+//Getting users that can publish Culture news
+publishCulturePolicy.on('click', function () {
+    console.log('publish-Culture-Policy');
+    $.ajax({
+        url: '/api/user/culture',
+        type: 'Get'
+    }).done(function (result) {
+        console.log('publish-Culture-Policy succes');
+        console.log(result);
+        $('#info-access').removeClass("access-red").addClass("access-green");
+        $('#info-access').append('<h3></h3>').text('Publicera kultur nyheter, kod 200');
+    }).fail(function (xhr, status, error) {
+        console.log('error');
+        $('#info-access').removeClass("access-green").addClass("access-red");
+        $('#info-access').append('<h3></h3>').text('Publicera kultur nyheter, kod 403');
     });
+
+});
 });

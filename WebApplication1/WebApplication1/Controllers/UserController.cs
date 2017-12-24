@@ -89,7 +89,7 @@ namespace RolesAndClaims.Controllers
                     switch (user.Role)
                     {
                         case "Administrator":
-                            await userMngr.AddClaimAsync(newUser, new Claim("News", "Admin", "PublishSport", "PublishEconomy", "PublishCulture"));
+                            await userMngr.AddClaimAsync(newUser, new Claim("News", "Admin"));
                             break;
                         case "Subscriber":
                             if (user.Age >= 20 || user.Age == null)
@@ -103,9 +103,9 @@ namespace RolesAndClaims.Controllers
                                 case "peter@gmail.com":
                                     await userMngr.AddClaimAsync(newUser, new Claim("News", "PublishSport"));
                                     await userMngr.AddClaimAsync(newUser, new Claim("News", "PublishEconomy"));
+                                    await userMngr.AddClaimAsync(newUser, new Claim("News", "Adult"));
                                     break;
                             }
-                            await userMngr.AddClaimAsync(newUser, new Claim("News", "PublishCulture", "PublishEconomy", "PublishSport"));
                             break;
                     }
                 }
@@ -130,10 +130,11 @@ namespace RolesAndClaims.Controllers
                 listOfUserWithClaims.Add(new UserVm
                 {
                     User = user,
+                    Role = await userMngr.GetRolesAsync(user),
                     Claims = await userMngr.GetClaimsAsync(user)
                 });
             }
-            return Ok(listOfUserWithClaims);
+            return Ok(listOfUserWithClaims.OrderBy(u=>u.User.FirstName));
         }
         [HttpGet, Route("open")]
         public IActionResult Open()
