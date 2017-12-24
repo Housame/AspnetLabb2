@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RolesAndClaims.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -43,21 +45,29 @@ namespace RolesAndClaims.Controllers
             }
             return Ok();
         }
-
         [HttpGet]
-        [Route("add")]
-        public async Task<IActionResult> ClearDbAndRetrieveStaticUsers()
+        [Route("getusers")]
+        public IActionResult GetAllUsers()
+        {
+            var users = userMngr.Users.OrderBy(c => c.FirstName);
+            return Ok(users);
+        }
+        [HttpGet]
+        [Route("reset")]
+        public async Task<IActionResult> ResetUsers()
         {
             //await AddRolesToIdentity();
+
             context.RemoveRange(userMngr.Users);
+            context.SaveChanges();
 
             var users = new List<StaticUser>
             {
-                new StaticUser { FirstName = "Adam", Email = "adam@gmail.com", Role = "Administrator" },
-                new StaticUser { FirstName = "Peter", Email = "peter@gmail.com", Role = "Publisher" },
+                new StaticUser { FirstName = "Adam", Email = "adam@gmail.com", Role = "Administrator",Age=null},
+                new StaticUser { FirstName = "Peter", Email = "peter@gmail.com", Role = "Publisher",Age=null},
                 new StaticUser { FirstName = "Susan", Email = "susan@gmail.com", Role = "Subscriber", Age = 48 },
                 new StaticUser { FirstName = "Viktor", Email = "viktor@gmail.com", Role = "Subscriber", Age = 15 },
-                new StaticUser { FirstName = "Xerxes", Email = "xerxes@gmail.com", Role = null},
+                new StaticUser { FirstName = "Xerxes", Email = "xerxes@gmail.com", Age=null, Role = null}
             };
 
             foreach (var user in users)
@@ -76,6 +86,28 @@ namespace RolesAndClaims.Controllers
                 {
                     if (user.Role != null)
                         await userMngr.AddToRoleAsync(newUser, user.Role);
+                    switch (user.Role)
+                    {
+                        case "Administrator":
+                            await userMngr.AddClaimAsync(newUser, new Claim("News", "Admin", "PublishSport", "PublishEconomy", "AllPublisher"));
+                            break;
+                        case "Subscriber":
+                            if (user.Age >= 20 || user.Age == null)
+                            {
+                                await userMngr.AddClaimAsync(newUser, new Claim("News", "Adult"));
+                            }
+                            break;
+                        case "Publisher":
+                            switch (user.Email)
+                            {
+                                case "peter@gmail.com":
+                                    await userMngr.AddClaimAsync(newUser, new Claim("News", "PublishSport"));
+                                    await userMngr.AddClaimAsync(newUser, new Claim("News", "PublishEconomy"));
+                                    break;
+                            }
+                            await userMngr.AddClaimAsync(newUser, new Claim("News", "AllPublisher"));
+                            break;
+                    }
                 }
             }
 
@@ -87,22 +119,19 @@ namespace RolesAndClaims.Controllers
         {
             var user = await userMngr.FindByNameAsync(email);
             await signInMngr.SignInAsync(user, false);
-            return Ok();
+            return Ok(user);
         }
         [HttpGet, Route("usersnclaims")]
         public async Task<IActionResult> GetAllUsersWithClaims()
         {
             var listOfUserWithClaims = new List<UserVm>();
-            foreach (var user in userMngr.Users)
+            foreach (var user in userMngr.Users.ToList())
             {
-                var usersClaims = await userMngr.GetClaimsAsync(user);
-
-                var userNClaims = new UserVm()
+                listOfUserWithClaims.Add(new UserVm
                 {
                     User = user,
-                    Claims = usersClaims
-                };
-                listOfUserWithClaims.Add(userNClaims);
+                    Claims = await userMngr.GetClaimsAsync(user)
+                });
             }
             return Ok(listOfUserWithClaims);
         }

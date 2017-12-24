@@ -50,7 +50,7 @@
             <div class="col-md-3 col-options">
                 <div>
                     <h3>Användare</h3>
-                    <button id="add-Users" class="btn btn-primary">Återskapa alla användare</button><br>
+                    <button id="reset-users" class="btn btn-primary">Återskapa alla användare</button><br>
                     <button id="GetAllUsersWithClaims" class="btn btn-primary">Hämta alla anvädare- med claims</button>
                 </div>
                 <hr>
@@ -70,13 +70,19 @@
                     <h3>Kolla access</h3>
                     <button id="open-policy" class="btn btn-warning">Kan se öppen nyhet</button>
                     <button id="hidden-policy" class="btn btn-warning">Kan se dold nyhet</button><br>
-                    <button id="hidden-policy-20" class="btn btn-danger">Kan se öppen nyhet och är &gt;= 20 år</button><br>
+                    <button id="hidden-policy-20" class="btn btn-danger">Kan se dold nyhet och är &gt;= 20 år</button><br>
                     <button id="publish-sport-policy" class="btn btn-warning">Kan publicera en sportnyhet</button><br>
                     <button id="publish-culture-policy" class="btn btn-warning">Kan publicera en kulturnyhet</button><br>
                 </div>
             </div>
-            <div class="col-md-8 col-show">
-
+            <div id="info-col" class="col-md-8 col-show">
+                <h4><b>Inloggad som</b> </h4>
+                <div id="info-name"></div>
+                <div id="info-age"></div>
+                <div id="info-email"></div>
+                <div id="info-access"></div>
+                <!--<p id="info-role"></p>
+    <p id="info-claim"></p>-->
             </div>
         </div>
 
