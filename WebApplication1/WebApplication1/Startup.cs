@@ -32,9 +32,9 @@ namespace WebApplication1
             {
                 options.AddPolicy("HiddenNews", policy => policy.RequireRole("Publisher", "Subscriber", "Administrator"));
                 options.AddPolicy("AgeRequirement", policy => policy.RequireClaim("News", "Adult", "Admin", "AllPublisher"));
-                options.AddPolicy("SportsRequirement", policy => policy.RequireClaim("PublishSport", "Admin", "AllPublisher"));
-                options.AddPolicy("PublishEconomy", policy => policy.RequireClaim("PublishEconomy", "Admin", "AllPublisher"));
-                options.AddPolicy("CultureRequirement", policy =>policy.RequireClaim("PublishCulture", "Admin", "AllPublisher"));
+                options.AddPolicy("SportsRequirement", policy => policy.RequireClaim("News", "PublishSport", "Admin"));
+                options.AddPolicy("PublishEconomy", policy => policy.RequireClaim("News", "PublishEconomy", "Admin"));
+                options.AddPolicy("CultureRequirement", policy =>policy.RequireClaim("News", "PublishCulture", "Admin"));
             });
         }
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

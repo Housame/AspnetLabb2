@@ -89,7 +89,7 @@ namespace RolesAndClaims.Controllers
                     switch (user.Role)
                     {
                         case "Administrator":
-                            await userMngr.AddClaimAsync(newUser, new Claim("News", "Admin", "PublishSport", "PublishEconomy", "AllPublisher"));
+                            await userMngr.AddClaimAsync(newUser, new Claim("News", "Admin", "PublishSport", "PublishEconomy", "PublishCulture"));
                             break;
                         case "Subscriber":
                             if (user.Age >= 20 || user.Age == null)
@@ -105,7 +105,7 @@ namespace RolesAndClaims.Controllers
                                     await userMngr.AddClaimAsync(newUser, new Claim("News", "PublishEconomy"));
                                     break;
                             }
-                            await userMngr.AddClaimAsync(newUser, new Claim("News", "AllPublisher"));
+                            await userMngr.AddClaimAsync(newUser, new Claim("News", "PublishCulture", "PublishEconomy", "PublishSport"));
                             break;
                     }
                 }
