@@ -15,6 +15,33 @@ body {
     background-repeat: no-repeat;
 }
 
+hr.info-line {
+    height: 30px;
+    border-style: solid;
+    border-color: #8c8b8b;
+    border-width: 1px 0 0 0;
+    border-radius: 20px;
+}
+
+hr.info-line:before {
+    display: block;
+    content: "";
+    height: 30px;
+    margin-top: -31px;
+    border-style: solid;
+    border-color: #8c8b8b;
+    border-width: 0 0 1px 0;
+    border-radius: 20px;
+}
+
+.access-green {
+    color: green;
+}
+
+.access-red {
+    color: green;
+}
+
 .footer {
     position: absolute;
     bottom: 0;
