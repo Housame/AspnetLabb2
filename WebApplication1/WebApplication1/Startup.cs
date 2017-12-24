@@ -34,7 +34,7 @@ namespace WebApplication1
                 options.AddPolicy("AgeRequirement", policy => policy.RequireClaim("News", "Adult", "Admin", "AllPublisher"));
                 options.AddPolicy("SportsRequirement", policy => policy.RequireClaim("News", "PublishSport", "Admin"));
                 options.AddPolicy("PublishEconomy", policy => policy.RequireClaim("News", "PublishEconomy", "Admin"));
-                options.AddPolicy("CultureRequirement", policy =>policy.RequireClaim("News", "PublishCulture", "Admin"));
+                options.AddPolicy("CultureRequirement", policy =>policy.RequireClaim("PublishCulture", "Admin"));
             });
         }
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

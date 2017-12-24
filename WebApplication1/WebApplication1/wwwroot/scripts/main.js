@@ -96,11 +96,11 @@
         }).done(function (result) {
             console.log('open-Policy succes');
             console.log(result);
-            $('#info-access').addClass("access-green");
+            $('#info-access').removeClass("access-red").addClass("access-green");
             $('#info-access').append('<h3></h3>').text('Se öppna nyheter, kod 200');
         }).fail(function (xhr, status, error) {
             console.log('error');
-            $('#info-access').addClass("access-red");
+            $('#info-access').removeClass("access-green").addClass("access-red");
             $('#info-access').append('<h3></h3>').text('Se öppna nyheter, kod 403');
         });
 
@@ -114,11 +114,11 @@
         }).done(function (result) {
             console.log('hidden-Policy succes');
             console.log(result);
-            $('#info-access').addClass("access-green");
+            $('#info-access').removeClass("access-red").addClass("access-green");
             $('#info-access').append('<h3></h3>').text('Se dolda nyheter, kod 200');
         }).fail(function (xhr, status, error) {
             console.log('error');
-            $('#info-access').addClass("access-red");
+            $('#info-access').removeClass("access-green").addClass("access-red");
             $('#info-access').append('<h3></h3>').text('Se dolda nyheter, kod 403');
         });
 
@@ -132,11 +132,11 @@
         }).done(function (result) {
             console.log('hidden-Policy-20 succes');
             console.log(result);
-            $('#info-access').addClass("access-green");
+            $('#info-access').removeClass("access-red").addClass("access-green");
             $('#info-access').append('<h3></h3>').text('Se dolda nyheter och är äldre än 20år, kod 200');
         }).fail(function (xhr, status, error) {
             console.log('error');
-            $('#info-access').addClass("access-red");
+            $('#info-access').removeClass("access-green").addClass("access-red");
             $('#info-access').append('<h3></h3>').text('Se dolda nyheter och är äldre än 20år, kod 403');
         });
 
@@ -150,11 +150,11 @@
         }).done(function (result) {
             console.log('publish-sport-Policy succes');
             console.log(result);
-            $('#info-access').addClass("access-green");
+            $('#info-access').removeClass("access-red").addClass("access-green");
             $('#info-access').append('<h3></h3>').text('Publicera sport nyheter, kod 200');
         }).fail(function (xhr, status, error) {
             console.log('error');
-            $('#info-access').addClass("access-red");
+            $('#info-access').removeClass("access-green").addClass("access-red");
             $('#info-access').append('<h3></h3>').text('Publicera sport nyheter, kod 403');
         });
 
@@ -168,11 +168,11 @@
         }).done(function (result) {
             console.log('publish-Culture-Policy succes');
             console.log(result);
-            $('#info-access').addClass("access-green");
+            $('#info-access').removeClass("access-red").addClass("access-green");
             $('#info-access').append('<h3></h3>').text('Publicera kultur nyheter, kod 200');
         }).fail(function (xhr, status, error) {
             console.log('error');
-            $('#info-access').addClass("access-red");
+            $('#info-access').removeClass("access-green").addClass("access-red");
             $('#info-access').append('<h3></h3>').text('Publicera kultur nyheter, kod 403');
         });
 
